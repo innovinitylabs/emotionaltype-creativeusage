@@ -11,7 +11,23 @@ function createWordSpans(text) {
   }).join('');
 }
 
+function reserveMaxWidthForWords() {
+  container.querySelectorAll('.word-span').forEach(span => {
+    // Save original settings
+    const originalSettings = span.style.fontVariationSettings;
+    // Set to max weight
+    span.style.fontVariationSettings = "'wght' 1000";
+    // Force reflow and measure
+    const width = span.offsetWidth;
+    // Set min-width
+    span.style.minWidth = width + "px";
+    // Restore original settings
+    span.style.fontVariationSettings = originalSettings;
+  });
+}
+
 container.innerHTML = createWordSpans(text);
+reserveMaxWidthForWords();
 
 // Add hover listeners to each word
 container.querySelectorAll('.word-span').forEach(span => {

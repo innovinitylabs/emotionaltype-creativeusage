@@ -13,6 +13,9 @@
       font-size: 1.25rem;
       line-height: 2.1;
       margin-bottom: 2rem;
+      padding-right: 4em;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
     .line-span {
       display: block;
@@ -74,7 +77,22 @@
     function createLineSpans(lines) {
       return lines.map(line => `<span class="line-span emotional">${line}</span>`).join('');
     }
+    function reserveMaxWidthForLines() {
+      container.querySelectorAll('.line-span').forEach(span => {
+        // Save original settings
+        const originalSettings = span.style.fontVariationSettings;
+        // Set to max weight
+        span.style.fontVariationSettings = "'wght' 1000";
+        // Force reflow and measure
+        const width = span.offsetWidth;
+        // Set min-width
+        span.style.minWidth = width + "px";
+        // Restore original settings
+        span.style.fontVariationSettings = originalSettings;
+      });
+    }
     container.innerHTML = createLineSpans(sentences);
+    reserveMaxWidthForLines();
     container.querySelectorAll('.line-span').forEach(span => {
       span.addEventListener('mouseenter', () => {
         span.style.fontVariationSettings = "'wght' 1000";

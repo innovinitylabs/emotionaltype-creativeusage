@@ -13,6 +13,9 @@
       font-size: 1.25rem;
       line-height: 2.1;
       margin-bottom: 2rem;
+      padding-right: 4em;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
     .letter-span {
       display: inline-block;
@@ -126,7 +129,23 @@
       }).join('');
     }
 
+    function reserveMaxWidthForLetters() {
+      container.querySelectorAll('.letter-span').forEach(span => {
+        // Save original settings
+        const originalSettings = span.style.fontVariationSettings;
+        // Set to max weight
+        span.style.fontVariationSettings = "'wght' 1000";
+        // Force reflow and measure
+        const width = span.offsetWidth;
+        // Set min-width
+        span.style.minWidth = width + "px";
+        // Restore original settings
+        span.style.fontVariationSettings = originalSettings;
+      });
+    }
+
     container.innerHTML = createLetterSpans(text);
+    reserveMaxWidthForLetters();
 
     function handleLetterEnter(span) {
       if (span.classList.contains('selected')) return;
