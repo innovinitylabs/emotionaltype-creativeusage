@@ -51,6 +51,14 @@ Explore all interactive modes and the full article online!
 - Layout jitter is prevented by ensuring word/letter spans have a minimum width or buffer.
 - All modes are designed for inclusivity and smooth user experience.
 
+## Animation Stability Fix
+
+To prevent words, lines, or letters from jumping to the next line during font weight animation, the following improvements have been made site-wide:
+
+- Each animated span (word, line, or letter) reserves its maximum width using `min-width`, measured at the boldest font weight.
+- The text containers (e.g., `.reading-demo-text`, `.word-demo-text`, etc.) have extra right padding and `overflow-x: hidden` to provide a buffer for animated expansion.
+- This ensures smooth, stable animations with no layout shifts, improving accessibility and user experience for all highlight demos.
+
 ## Font Credits
 
 - **Emotional Variable Font** by [emotionaltype.org](http://www.emotionaltype.org/)
