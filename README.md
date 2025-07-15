@@ -1,6 +1,12 @@
 # EmotionalType Creative Usage Demo
 
-This project is a showcase of the Emotional Variable Font, featuring interactive and educational content about the ancient Tamil civilization. It demonstrates creative uses of variable fonts for both word-based and line-based highlighting, making history engaging and visually dynamic.
+This project is a showcase of the Emotional Variable Font, featuring interactive and educational content about the ancient Tamil civilization. It demonstrates creative uses of variable fonts for word, line, and letter-based highlighting, making history engaging and visually dynamic.
+
+## 🌐 Live Demo
+
+- **GitHub Pages:** [https://innovinitylabs.github.io/emotionaltype-creativeusage/](https://innovinitylabs.github.io/emotionaltype-creativeusage/)
+
+Explore all interactive modes and the full article online!
 
 ## Features
 
@@ -16,17 +22,34 @@ This project is a showcase of the Emotional Variable Font, featuring interactive
   - Hover over any sentence to see the emotional font effect.
   - Sentences are split and highlighted individually for a unique reading experience.
 
+- **Reading Mode** (`reading-mode.html`):
+  - "Living" effect: the currently hovered word animates to positive, previously hovered words fade back to negative, creating a flowing effect.
+  - Last hovered word remains highlighted for ADHD-friendly focus.
+  - Sepia/vintage brown background for comfortable reading.
+  - Toggle to disable highlights and a select mode for persistent word selection.
+
+- **Letter Highlight Demo** (`letter-highlight.html`):
+  - Each letter is wrapped in a span; hovering animates the letter.
+  - Select mode available for persistent highlighting of letters.
+
+- **Navigation Bar** on all pages for easy switching between modes.
+
 ## How to Use
 
-1. **Clone or Download** this repository.
-2. Open `index.html`, `word-highlight.html`, or `line-highlight.html` in your browser.
-3. No build step or server is required—everything runs client-side.
-4. Make sure the `public/emotional-VF.ttf` font file is present and referenced in your CSS.
+1. **View Online:**
+   - Visit the [GitHub Pages site](https://innovinitylabs.github.io/emotionaltype-creativeusage/) for the full interactive experience.
+2. **Local Development:**
+   - Clone or download this repository.
+   - Open any of the HTML files (`index.html`, `word-highlight.html`, `line-highlight.html`, `reading-mode.html`, `letter-highlight.html`) in your browser.
+   - No build step or server is required—everything runs client-side.
+   - Ensure the `public/emotional-VF.ttf` font file is present and referenced in your CSS.
 
-## Local Development
+## Accessibility & UX
 
-- All files are static and can be served with any static file server, or simply opened directly in your browser.
-- To edit content, update the HTML files or the JS files for highlight logic.
+- Persistent focus highlight in Reading Mode is explained as ADHD-friendly in a footnote.
+- Highlight color is standardized to a gentle sepia (`#f5eeda`) for comfort.
+- Layout jitter is prevented by ensuring word/letter spans have a minimum width or buffer.
+- All modes are designed for inclusivity and smooth user experience.
 
 ## Font Credits
 
@@ -47,7 +70,7 @@ Pull requests and suggestions are welcome! Please open an issue or PR for improv
 
 ## License
 
-[Specify your license here, e.g., MIT, Apache 2.0, etc.]
+MIT
 
 ---
 
