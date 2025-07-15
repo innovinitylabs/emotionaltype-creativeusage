@@ -25,6 +25,12 @@
     .word-span.active {
       background: #f0eaff;
     }
+    .word-span.selected {
+      background: #b3e5fc !important;
+      box-shadow: 0 0 0 2px #81d4fa;
+      font-variation-settings: 'wght' 1000 !important;
+      transition: background 0.3s, box-shadow 0.3s, font-variation-settings 0.8s cubic-bezier(.4,2,.6,1);
+    }
   </style>
 </head>
 <body>
@@ -38,6 +44,9 @@
     <h1 class="emotional">Reading Mode</h1>
     <section class="reading-demo-section">
       <h2 class="emotional">Hover Over Words: Words Come Alive, Then Fade</h2>
+      <label style="display:block;margin-bottom:1rem;">
+        <input type="checkbox" id="select-toggle" /> Enable Select Mode (click to select words)
+      </label>
       <div class="reading-demo-text" id="reading-demo-text">
         <!-- Words will be injected here by JS -->
       </div>
@@ -55,6 +64,39 @@
     const text = `The Tamil civilization is among the oldest continuous cultures in the world, with roots stretching back at least 3500 BCE, and possibly earlier. Archaeological discoveries at sites like Keezhadi (Keeladi) in Tamil Nadu have pushed the timeline of urban Tamil culture to at least 600 BCE, with some evidence suggesting settlements as early as 3000 BCE. Keezhadi’s excavations have revealed advanced urban planning, brick structures, and, most significantly, pot shards inscribed with Tamil-Brahmi script. These inscriptions, found on everyday objects, indicate that literacy was not limited to elites—common people, too, were literate, making ancient Tamil society one of the earliest mass-literate cultures in the world.\n\nThe ancient Sangam literature, some of which may date back to the 1st millennium BCE, describes a sophisticated society with established cities, trade, and a vibrant literary tradition. The legendary lost continent of Kumari Kandam, referenced in Tamil literature, is believed by some to have been a cradle of early Dravidian civilization, much of which was lost to the sea in ancient cataclysms.\n\nMany scholars now believe that the Indus Valley Civilization (IVC), one of the world’s earliest urban cultures (c. 3300–1300 BCE), was Dravidian in origin, with strong linguistic and cultural links to the Tamils. Parallels in script, motifs, and religious practices—such as the worship of the Mother Goddess, use of the bull as a sacred symbol, and the presence of graffiti marks similar to those found in Tamil Nadu—suggest a deep connection. The collapse of the IVC around 1500 BCE may have led to the southward migration of Dravidian peoples, further enriching the Tamil heartland.\n\nKeezhadi, near Madurai, is a watershed in Indian archaeology. Excavations have unearthed a planned city with brick houses, wells, drainage, and a wealth of artifacts. The most remarkable finds are pot shards with Tamil-Brahmi inscriptions, some dating to the 6th century BCE. These inscriptions, often names or short phrases, show that writing was used by ordinary people, not just priests or kings. This challenges the notion that literacy in ancient times was exclusive, and places the Tamils among the earliest literate societies.\n\nThe Sangam Age (c. 300 BCE–300 CE) is renowned for its poetry, which covers themes of love, war, ethics, and governance. The three crowned dynasties—Chola, Chera, and Pandya—ruled over a land of bustling cities, ports, and fertile fields. Tamil society was open and pluralistic, with Jainism, Buddhism, and Hinduism coexisting. Women poets and rulers were not uncommon. Trade flourished with Rome, Egypt, Southeast Asia, and China. Tamil merchants sailed the Indian Ocean, and Roman coins and amphorae have been found in Tamil Nadu.\n\nThe Chola dynasty (c. 9th–13th centuries CE) built one of the greatest maritime empires in history. Under Rajaraja Chola I and Rajendra Chola I, the Cholas controlled the Indian Ocean trade routes, conquered Sri Lanka, the Maldives, and even sent naval expeditions to Southeast Asia, including Srivijaya (Sumatra). Their navy was the most powerful in Asia, and their influence reached as far as China. The Cholas built monumental temples, such as the Brihadeeswarar Temple in Thanjavur, a UNESCO World Heritage site and a marvel of engineering and art.\n\nThe Kallanai (Grand Anicut), built by Karikala Chola around the 2nd century CE, is the world’s oldest functioning dam, still regulating the flow of the Kaveri River. The Brihadeeswarar Temple in Thanjavur, built in the 11th century, is a masterpiece of Chola architecture, with a 66-meter-tall granite tower and exquisite sculptures. The Sittanavasal Cave, dating to the 7th century, contains Jain frescoes and is famous for its acoustics—chanting “Om” inside produces a unique reverberation. These monuments showcase the Tamils’ mastery of engineering, art, and spirituality.\n\nTamils were pioneers in metallurgy. Wootz steel, produced in ancient Tamilakam, was famed worldwide for its strength and flexibility, used to make the legendary Damascus swords. The aympon (five-metal) alloy was used in making idols and utensils. Tamil mathematicians, astronomers, and physicians made significant contributions to science. The region’s guilds and trade organizations were among the earliest forms of corporate institutions.\n\nThe Pandya dynasty, with roots stretching back to at least 300 BCE and possibly much earlier, is considered one of the longest-reigning dynasties in world history. The Pandyas were renowned for their patronage of literature, temples, and trade. Their capital, Madurai, is one of the world’s oldest continuously inhabited cities. The dynasty survived through centuries of upheaval, adapting and thriving until the advent of colonial rule.\n\nToday, Tamil is one of the world’s oldest living languages, spoken by over 80 million people worldwide. Tamil culture, literature, music, and dance continue to thrive, both in India and across the global diaspora. The Tamils’ legacy of innovation, resilience, and openness to the world remains a source of inspiration for all humanity.`;
 
     const container = document.getElementById('reading-demo-text');
+    const selectToggle = document.getElementById('select-toggle');
+    let fadingWords = new Set();
+    let fadeIntervals = new Map();
+
+    function setWordWeight(span, wght) {
+      span.style.fontVariationSettings = `'wght' ${wght}`;
+    }
+
+    function fadeWord(span) {
+      if (span.classList.contains('selected')) return; // Don't fade selected words
+      let current = 1000;
+      if (fadeIntervals.has(span)) clearInterval(fadeIntervals.get(span));
+      span.classList.remove('active');
+      fadingWords.add(span);
+      span.style.transition = 'none';
+      let step = 30; // ms
+      let duration = 1800; // ms
+      let steps = duration / step;
+      let delta = (1000 + 1000) / steps; // from 1000 to -1000
+      let wght = 1000;
+      fadeIntervals.set(span, setInterval(() => {
+        wght -= delta;
+        if (wght <= -1000) {
+          wght = -1000;
+          setWordWeight(span, wght);
+          clearInterval(fadeIntervals.get(span));
+          fadeIntervals.delete(span);
+          fadingWords.delete(span);
+        } else {
+          setWordWeight(span, wght);
+        }
+      }, step));
+    }
 
     function createWordSpans(text) {
       // Split by spaces, but keep punctuation attached to words
@@ -66,33 +108,69 @@
 
     container.innerHTML = createWordSpans(text);
 
-    let lastActive = null;
-    let fadeTimeout = null;
+    let lastHovered = null;
 
-    function fadeToNegative(span) {
-      span.style.transition = 'font-variation-settings 1.5s cubic-bezier(.4,2,.6,1)';
-      span.style.fontVariationSettings = "'wght' -1000";
-      span.classList.remove('active');
+    function handleWordEnter(span) {
+      if (span.classList.contains('selected')) return;
+      if (fadeIntervals.has(span)) {
+        clearInterval(fadeIntervals.get(span));
+        fadeIntervals.delete(span);
+        fadingWords.delete(span);
+      }
+      span.style.transition = 'font-variation-settings 0.3s cubic-bezier(.4,2,.6,1)';
+      setWordWeight(span, 1000);
+      span.classList.add('active');
+      if (lastHovered && lastHovered !== span && !lastHovered.classList.contains('selected')) {
+        fadeWord(lastHovered);
+      }
+      lastHovered = span;
     }
 
-    container.querySelectorAll('.word-span').forEach(span => {
-      span.addEventListener('mouseenter', () => {
-        // Highlight this word
-        span.style.transition = 'font-variation-settings 0.3s cubic-bezier(.4,2,.6,1)';
-        span.style.fontVariationSettings = "'wght' 1000";
+    function handleWordLeave(span) {
+      // Do nothing on leave, let fade happen on next hover
+    }
+
+    function handleWordClick(span) {
+      if (!selectToggle.checked) return;
+      if (span.classList.contains('selected')) {
+        span.classList.remove('selected');
+        fadeWord(span);
+      } else {
+        span.classList.add('selected');
+        setWordWeight(span, 1000);
         span.classList.add('active');
-        // If there was a previous word, start fading it after a delay
-        if (lastActive && lastActive !== span) {
-          if (fadeTimeout) clearTimeout(fadeTimeout);
-          const prev = lastActive;
-          fadeTimeout = setTimeout(() => fadeToNegative(prev), 200);
+        if (fadeIntervals.has(span)) {
+          clearInterval(fadeIntervals.get(span));
+          fadeIntervals.delete(span);
+          fadingWords.delete(span);
         }
-        lastActive = span;
+      }
+    }
+
+    function attachListeners() {
+      container.querySelectorAll('.word-span').forEach(span => {
+        span.addEventListener('mouseenter', () => {
+          if (!selectToggle.checked) handleWordEnter(span);
+        });
+        span.addEventListener('mouseleave', () => {
+          if (!selectToggle.checked) handleWordLeave(span);
+        });
+        span.addEventListener('click', () => {
+          handleWordClick(span);
+        });
       });
-      span.addEventListener('mouseleave', () => {
-        // On mouseleave, do not immediately fade, let it stay until next word is hovered
-        // No action needed here
-      });
+    }
+
+    attachListeners();
+
+    selectToggle.addEventListener('change', () => {
+      // When toggling off, remove all selected highlights
+      if (!selectToggle.checked) {
+        container.querySelectorAll('.word-span.selected').forEach(span => {
+          span.classList.remove('selected');
+          fadeWord(span);
+        });
+      }
     });
   </script>
 </body>
