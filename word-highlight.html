@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Highlight Demo - Emotional Font</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .word-demo-section {
+      margin-top: 2rem;
+    }
+    .word-demo-text {
+      font-size: 1.25rem;
+      line-height: 2.1;
+      margin-bottom: 2rem;
+    }
+    .word-span {
+      display: inline-block;
+      transition: font-variation-settings 0.8s cubic-bezier(.4,2,.6,1);
+      font-variation-settings: 'wght' -1000;
+      cursor: pointer;
+      padding: 0 2px;
+      border-radius: 4px;
+    }
+    .word-span.active {
+      background: #f0eaff;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav style="margin-bottom:2rem;">
+      <a href="index.html">Article View</a> |
+      <a href="word-highlight.html">Word Highlight Demo</a> |
+      <a href="line-highlight.html">Line Highlight Demo</a>
+    </nav>
+    <h1 class="emotional">Word Highlight Demo</h1>
+    <section class="word-demo-section">
+      <h2 class="emotional">Hover Over Each Word to See the Emotional Font</h2>
+      <div class="word-demo-text" id="word-demo-text">
+        <!-- The detailed Tamil history content will be injected here by JS as word spans -->
+        <!-- See word-highlight.js for logic -->
+      </div>
+      <footer>
+        <section style="margin-top:2rem;">
+          <h3>Notes & Credits</h3>
+          <p>This site was curated and enhanced by <strong>Valipokkann</strong>. For more projects, visit <a href="https://valipokkann.in" target="_blank">valipokkann.in</a>.</p>
+        </section>
+        <p>Font: <a href="http://www.emotionaltype.org/" target="_blank">Emotional Variable Font</a> | <a href="index.html">Back to Article</a></p>
+      </footer>
+    </section>
+  </main>
+  <script src="word-highlight.js"></script>
+</body>
+</html> 

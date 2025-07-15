@@ -1,0 +1,64 @@
+@font-face {
+  font-family: 'Emotional';
+  src: url('public/emotional-VF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background: #f9f9f9;
+  color: #222;
+  font-family: 'Emotional', 'SF Pro Display', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.emotional {
+  font-family: 'Emotional', 'SF Pro Display', Arial, sans-serif;
+  font-variation-settings: 'wght' -1000;
+  transition: font-variation-settings 0.8s cubic-bezier(.4,2,.6,1);
+  cursor: pointer;
+}
+
+footer {
+  margin-top: 2.5rem;
+  font-size: 0.95rem;
+  color: #666;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 1rem 0.5rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.1rem;
+  }
+} 
